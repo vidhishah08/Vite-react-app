@@ -18,7 +18,6 @@ function ProjectFormDrawer({ open, onClose }) {
   };
 
   const handleSubmit = (values) => {
-    // Handle form submission
     console.log(values);
   };
 
