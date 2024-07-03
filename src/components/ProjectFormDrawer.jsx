@@ -1,6 +1,7 @@
-import React from 'react';
-import { Drawer, Box, TextField, Button, Checkbox, FormControlLabel, Grid, InputLabel, Select, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { Drawer, Box, TextField, Button, Checkbox, FormControlLabel, Grid, InputLabel, Select, MenuItem , Typography} from '@mui/material';
 import { Formik, Form, Field } from 'formik';
+import RichTextEditor from 'react-rte';
 
 function ProjectFormDrawer({ open, onClose }) {
   const initialValues = {
@@ -12,80 +13,106 @@ function ProjectFormDrawer({ open, onClose }) {
     projectCategory: '',
     department: '',
     client: '',
-    projectSummary: '',
-    notes: '',
+    projectSummary: RichTextEditor.createEmptyValue(),
+    notes: RichTextEditor.createEmptyValue(),
     createPublicProject: false,
   };
 
+  const [projectSummary, setProjectSummary] = useState(RichTextEditor.createEmptyValue());
+  const [notes, setNotes] = useState(RichTextEditor.createEmptyValue());
+
   const handleSubmit = (values) => {
+    values.projectSummary = projectSummary.toString('html');
+    values.notes = notes.toString('html');
     console.log(values);
   };
 
   return (
-    <Drawer anchor="right" open={open} onClose={onClose}>
-      <Box p={2} width={600} role="presentation">
+    <Drawer anchor="right" open={open} onClose={onClose} sx={{'& .MuiDrawer-paper':{width:'80%', background:'#f3f4f8'}}}>
+      <Box p={2} role="presentation">
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ values, handleChange }) => (
             <Form>
-              <h2>Add Project</h2>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Field as={TextField} fullWidth label="Short Code" name="shortCode" variant="outlined" />
+              <Box sx={{ fontSize: 25,fontWeight:'bold' , mb:3 , mt: 2}}>Add Project</Box>
+              <Box sx={{background:'white', paddingX: 3,paddingTop : 1,paddingBottom:3}}>
+                <Box sx={{ fontSize : 29, mt: 2, paddingBottom: 2, borderBottom : 1, borderColor: '#dbdce0',mb:2}}>Project Details</Box>
+                <Grid container spacing={2}  sx={{mt: '30px'}}>
+                  <Grid item xs={4}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 }}>Short Code</InputLabel>
+                    <Field as={TextField} fullWidth placeholder="Project Unique Short Code" name="shortCode" variant="outlined" sx={{color:"#ebedf4"}}/>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 ,display: 'flex' ,alignItems: 'center'}}>Project Name<Typography sx={{color : 'red' ,ml: '5px'}}>*</Typography></InputLabel>
+                    <Field as={TextField} fullWidth required placeholder="Write a project Name" name="projectName" variant="outlined" />
+                  </Grid>
+                  <Grid item xs={4} sx={{mt : '30px'}}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 ,display: 'flex' ,alignItems: 'center'}}>Start date<Typography sx={{color : 'red' ,ml: '5px'}}>*</Typography></InputLabel>
+                    <Field as={TextField} fullWidth type="date" placeholder="Select date"  name="startDate" InputLabelProps={{ shrink: true }} variant="outlined" required />
+                  </Grid>
+                  <Grid item xs={4} sx={{mt : '30px'}}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 ,display: 'flex' ,alignItems: 'center'}}>Deadline<Typography sx={{color : 'red' ,ml: '5px'}}>*</Typography></InputLabel>
+                    <Field as={TextField} fullWidth type="date" placeholder="Select date" name="deadline" InputLabelProps={{ shrink: true }} variant="outlined" required />
+                  </Grid>
+                  <Grid item xs={4} sx={{mt : '68px'}}>
+                    <FormControlLabel
+                      control={<Field as={Checkbox} name="noDeadline" />}
+                      label="There is no project deadline"
+                    />
+                  </Grid>
+                  <Grid item xs={4} sx={{mt:'30px'}}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 }}>Project Category</InputLabel>
+                    <Select name="projectCategory" sx={{width:'302px'}} defaultValue='--'>
+                      <MenuItem value="--">--</MenuItem>
+                      <MenuItem value="Type1">Type 1</MenuItem>
+                      <MenuItem value="Type2">Type 2</MenuItem>
+                    </Select>
+                    <Button sx={{background: '#f3f4f8', color:"#525254 " ,paddingY: 2,paddingX: 2}}>Add</Button>
+                  </Grid>
+                  <Grid item xs={4} sx={{mt:'30px'}}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 }}>Department</InputLabel>
+                    <Select name="department" fullWidth defaultValue='--'>
+                      <MenuItem value="--">--</MenuItem>
+                      <MenuItem value="Department1">Department 1</MenuItem>
+                      <MenuItem value="Department2">Department 2</MenuItem>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={4} sx={{mt:'30px'}}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 }}>Client</InputLabel>
+                    <Select name="client" sx={{width:'302px'}} defaultValue='--'>
+                      <MenuItem value="--" selected>--</MenuItem>
+                      <MenuItem value="Company">Company</MenuItem>
+                      <MenuItem value="Personal">Personal</MenuItem>
+                    </Select>
+                    <Button sx={{background: '#f3f4f8', color:"#525254 " ,paddingY: 2,paddingX: 2}}>Add</Button>
+                  </Grid>
+                  <Grid item xs={6} sx={{mt:'30px'}}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 }}>Project Summary</InputLabel>
+                    <RichTextEditor
+                      value={projectSummary}
+                      onChange={value => setProjectSummary(value)}
+                      name="projectSummary"
+                    />
+                  </Grid>
+                  <Grid item xs={6} sx={{mt:'30px'}}>
+                    <InputLabel sx={{ color:"#525254" ,mb:1 }}>Notes</InputLabel>
+                    <RichTextEditor
+                        value={notes}
+                        onChange={value => setNotes(value)}
+                        name="notes"
+                    />
+                  </Grid>
+                  <Grid item xs={12} mt='20px'>
+                    <FormControlLabel
+                      control={<Field as={Checkbox} name="createPublicProject" />}
+                      label="Create Public Project"
+                    />
+                  </Grid>
+                  <Grid item xs={12} mt= '20px'>
+                    <Button type="submit" variant="contained" color="warning">ADD</Button>
+                    <Button onClick={onClose} variant="outlined" color="secondary" style={{ marginLeft: '10px' }}>Cancel</Button>
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <Field as={TextField} fullWidth required label="Project Name" name="projectName" variant="outlined" />
-                </Grid>
-                <Grid item xs={6}>
-                  <Field as={TextField} fullWidth type="date" label="Start Date" name="startDate" InputLabelProps={{ shrink: true }} variant="outlined" required/>
-                </Grid>
-                <Grid item xs={6}>
-                  <Field as={TextField} fullWidth type="date" label="Deadline" name="deadline" InputLabelProps={{ shrink: true }} variant="outlined" required/>
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Field as={Checkbox} name="noDeadline" />}
-                    label="There is no project deadline"
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <InputLabel>Project Category</InputLabel>
-                  <Field as={Select} name="projectCategory" fullWidth>
-                    <MenuItem value="">--</MenuItem>
-                    <MenuItem value="Type1">Type 1</MenuItem>
-                    <MenuItem value="Type2">Type 2</MenuItem>
-                  </Field>
-                </Grid>
-                <Grid item xs={4}>
-                  <InputLabel>Department</InputLabel>
-                  <Field as={Select} name="Department" fullWidth>
-                    <MenuItem value="Department1">Department 1</MenuItem>
-                    <MenuItem value="Department2">Department 2</MenuItem>
-                  </Field>
-                </Grid>
-                <Grid item xs={4}>
-                  <InputLabel>Client</InputLabel>
-                  <Field as={Select} name="client" fullWidth>
-                    <MenuItem value="Company"> Company</MenuItem>
-                    <MenuItem value="Personal"> Personal</MenuItem>
-                  </Field>
-                </Grid>
-                <Grid item xs={12}>
-                  <Field as={TextField} fullWidth label="Project Summary" name="projectSummary" variant="outlined" multiline rows={4} />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field as={TextField} fullWidth label="Notes" name="notes" variant="outlined" multiline rows={4} />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Field as={Checkbox} name="createPublicProject" />}
-                    label="Create Public Project"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button type="submit" variant="contained" color="warning">Save</Button>
-                  <Button onClick={onClose} variant="outlined" color="secondary" style={{ marginLeft: '10px' }}>Cancel</Button>
-                </Grid>
-              </Grid>
+              </Box>
             </Form>
           )}
         </Formik>
