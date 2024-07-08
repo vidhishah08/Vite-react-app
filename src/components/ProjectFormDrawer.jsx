@@ -3,6 +3,7 @@ import { Drawer, Box, TextField, Button, Checkbox, FormControlLabel, Grid, Input
 import { Formik, Form, Field } from 'formik';
 import RichTextEditor from 'react-rte';
 import ProjectTemplateDrawer from './ProjectTemplateDrawer';
+import PayrollDrawer from './PayrollDrawer';
 
 function ProjectFormDrawer({ open, onClose }) {
   const initialValues = {
@@ -22,6 +23,7 @@ function ProjectFormDrawer({ open, onClose }) {
   const [projectSummary, setProjectSummary] = useState(RichTextEditor.createEmptyValue());
   const [notes, setNotes] = useState(RichTextEditor.createEmptyValue());
   const [templateDrawerOpen, setTemplateDrawerOpen] = useState(false);
+  const [payrollDrawerOpen, setPayrollDrawerOpen] = useState(false);
 
   const handleSubmit = (values) => {
     values.projectSummary = projectSummary.toString('html');
@@ -31,6 +33,10 @@ function ProjectFormDrawer({ open, onClose }) {
 
   const toggleTemplateDrawer = () => {
     setTemplateDrawerOpen(!templateDrawerOpen);
+  };
+
+  const togglePayrollDrawer = () => {
+    setPayrollDrawerOpen(!payrollDrawerOpen);
   };
 
   return (
@@ -116,6 +122,7 @@ function ProjectFormDrawer({ open, onClose }) {
                   </Grid>
                   <Grid item xs={12}>
                     <Button onClick={toggleTemplateDrawer} variant="contained" color="warning">Add Project Template</Button>
+                    <Button onClick={togglePayrollDrawer} variant="contained" color="warning" style={{ marginLeft: '10px' }}>Add Payroll</Button>
                   </Grid>
                   <Grid item xs={12} mt= '10px'>
                     <Button type="submit" variant="contained" color="warning">ADD</Button>
@@ -130,6 +137,7 @@ function ProjectFormDrawer({ open, onClose }) {
       </Box>
     </Drawer>
     <ProjectTemplateDrawer open={templateDrawerOpen} onClose={toggleTemplateDrawer} />
+    <PayrollDrawer open={payrollDrawerOpen} onClose={togglePayrollDrawer}/>
     </>
   );
 }
