@@ -27,7 +27,7 @@ const rows = [
   
 ];
 
-function ContractTable({ onAddClick,onAddProjectClick }) {
+function ContractTable({ onAddClick,onAddProjectClick,onAddDashboardClick}) {
   return (
     <Box  mx={10} my={-40}>
       <Stack direction="row" spacing={2}>
@@ -46,6 +46,13 @@ function ContractTable({ onAddClick,onAddProjectClick }) {
           onClick={onAddProjectClick}
         >
           Add Project
+        </Button>
+        <Button
+          variant="contained"
+          color='warning'
+          onClick={onAddDashboardClick}
+        >
+          Dashboard
         </Button>
       </Stack>
       <Box mt={5} style={{ height: 160, width: 1370 }}>
