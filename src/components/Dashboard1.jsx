@@ -42,9 +42,7 @@ const columns = [
     )},
   ];
   
-  const customLocaleText={
-    noRowsLabel:'No data available in the table',
-  };
+  
   
   const rows = [
     
@@ -147,7 +145,7 @@ function Dashboard1({open,onClose}){
                     </Grid>
                 </Box>
                 <Box mt={5} mx={2} style={{background:'white',height: 160}}>
-                    <DataGrid rows={rows} columns={columns} pageSize={5} localeText={customLocaleText}/>
+                    <DataGrid rows={rows} columns={columns} pageSize={5} />
                 </Box>
             </Box>
         </Drawer>
