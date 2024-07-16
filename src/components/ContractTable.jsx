@@ -2,7 +2,7 @@ import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button , Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import Capture from "../assets/Capture.png"
+import Capture from '../assets/Capture.png'
 
 const columns = [
   { field: 'id',headerName:'id', width: 250 ,renderHeader:()=>(
@@ -27,7 +27,7 @@ const rows = [
   
 ];
 
-function ContractTable({ onAddClick,onAddProjectClick,onAddDashboardClick,onAddTicketsClick}) {
+function ContractTable({ onAddClick,onAddProjectClick,onAddDashboardClick,onAddTicketsClick,onAddDashboard1Click}) {
   return (
     <Box  mx={10} my={-40}>
       <Stack direction="row" spacing={2}>
@@ -60,6 +60,13 @@ function ContractTable({ onAddClick,onAddProjectClick,onAddDashboardClick,onAddT
           onClick={onAddTicketsClick}
         >
           Tickets
+        </Button>
+        <Button
+          variant="contained"
+          color='warning'
+          onClick={onAddDashboard1Click}
+        >
+          Dashboard1
         </Button>
       </Stack>
       <Box mt={5} style={{ height: 160, width: 1370 }}>
